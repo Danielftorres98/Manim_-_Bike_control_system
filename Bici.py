@@ -1,3 +1,6 @@
+# Laura Manuela Castañeda Medina
+# Daniel Felipe Torres Robles
+
 from big_ol_pile_of_manim_imports import *
 # L1 signals
 
