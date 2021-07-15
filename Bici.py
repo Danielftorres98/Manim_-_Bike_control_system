@@ -17,12 +17,12 @@ class Anim_1_1(GraphScene):
         "y_tick_frequency" : 10,
         "x_tick_frequency" : 10,
         "graph_origin" : 0,
-        "y_axis_label": None, # Don't write y axis label
+        "y_axis_label": None, 
         "x_axis_label": None,
     }
     
     def construct(self):
-        Rectangulo1 = RoundedRectangle(
+        Rueda_bici_trasera = RoundedRectangle(
                      color = WHITE,
                      height = 2.3,
                      width = 0.4,
@@ -39,50 +39,65 @@ class Anim_1_1(GraphScene):
         Circulo.scale(0.25)
         Circulo.set_color(WHITE)
 
-        Rectangulo1.scale(0.6)
-        Rectangulo1.move_to(DOWN)
-        Linea1.next_to(Rectangulo1,UP,buff=.01)
+        Rueda_bici_trasera.scale(0.6)
+        Rueda_bici_trasera.move_to(DOWN)
+        Linea1.next_to(Rueda_bici_trasera, UP, buff=.01)
         Linea2.move_to(Linea1.get_center() + 0.4*DOWN)
-        Circulo.next_to(Linea1,UP,buff=.01)
+        Circulo.next_to(Linea1, UP, buff=.01)
 
-        Bici1 = VGroup(Linea1,Linea2,Circulo,Rectangulo1)
-        Bici1.move_to(3*RIGHT + 0.5*DOWN)
+        Bici_trasera = VGroup(Linea1,Linea2,Circulo,Rueda_bici_trasera)
+        Bici_trasera.move_to(3*RIGHT + 0.5*DOWN)
 
-        Rectangulo2 = RoundedRectangle(
+        Rueda_frontal_bici_trasera = RoundedRectangle(
                      color = WHITE,
                      height = 2.3,
                      width = 0.4,
                      corner_radius = 0.2
             )
 
-        Rectangulo2.rotate(PI/2)
-        Rectangulo2.set_fill(BLACK,opacity=1)
+        Rueda_frontal_bici_trasera.rotate(PI/2)
+        Rueda_frontal_bici_trasera.set_fill(BLACK,opacity=1)
 
-        Rectangulo3 = RoundedRectangle(
+        Rueda_trasera_bici_trasera = RoundedRectangle(
                      color = WHITE,
                      height = 2.3,
                      width = 0.4,
                      corner_radius = 0.2
             )
 
-        Rectangulo3.rotate(PI/2)
-        Rectangulo3.set_fill(BLACK,opacity=1)
+        Rueda_trasera_bici_trasera.rotate(PI/2)
+        Rueda_trasera_bici_trasera.set_fill(BLACK,opacity=1)
 
         Linea = Line(2*RIGHT,LEFT)
         Linea.set_color(WHITE)
 
-        Rectangulo2.scale(0.6)
-        Rectangulo3.scale(0.6)
-        Rectangulo2.move_to(Linea.get_right())
-        Rectangulo3.move_to(Linea.get_left())
+        Rueda_frontal_bici_trasera.scale(0.6)
+        Rueda_trasera_bici_trasera.scale(0.6)
+        Rueda_frontal_bici_trasera.move_to(Linea.get_right())
+        Rueda_trasera_bici_trasera.move_to(Linea.get_left())
         
-        Bici2 = VGroup(Linea,Rectangulo2,Rectangulo3)
-        Bici2.move_to(3*LEFT)
+        Bici_cenital = VGroup(Linea,Rueda_frontal_bici_trasera,Rueda_trasera_bici_trasera)
+        Bici_cenital.move_to(3*LEFT)
 
         self.setup_axes1()
         self.setup_axes2()
-        self.play(ShowCreation(Bici1),run_time = 2)
-        self.play(ShowCreation(Bici2),run_time = 2)
+        self.play(ShowCreation( Bici_trasera ),run_time = 2)
+        self.play(ShowCreation( Bici_cenital ),run_time = 2)
+        self.wait(2)
+
+        
+        Angulo = PI/2
+        Delta_Angulo = -PI/64
+        Punto_referencia_bici_trasera = Rueda_bici_trasera.get_center()+0.6*DOWN
+        Contador_fotograma = 0
+
+        while Contador_fotograma <= -( (1 / Delta_Angulo) * PI ):
+            Bici_trasera.rotate( Angulo , about_point = Punto_referencia_bici_trasera )
+            self.wait(0.1)
+            Angulo = Delta_Angulo
+            Contador_fotograma = Contador_fotograma + 1
+    
+
         self.wait(2)
 
     def setup_axes1(self):
