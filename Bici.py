@@ -132,9 +132,9 @@ class Anim_1_1(GraphScene):
             Angulo = Delta_Angulo
             Contador_fotograma = Contador_fotograma + 1
 
-            Angulo_bici_trasera.add_updater(lambda d: d.set_value( Angulo_arco_bici_trasera * 180 / PI) )
+            Angulo_bici_trasera.add_updater(lambda d: d.set_value( (Angulo_arco_bici_trasera * 180 / PI) + 2.81) )
             
-            Angulo_bici_cenital.add_updater(lambda d: d.set_value( Angulo_arco_bici_trasera * 180 / PI) )
+            Angulo_bici_cenital.add_updater(lambda d: d.set_value( (Angulo_arco_bici_trasera * 180 / PI) + 2.81) )
 
             Arco_bici_trasera = Arc( arc_center = Punto_referencia_bici_trasera , radius = 3, start_angle = PI/2, angle = Angulo_arco_bici_trasera)
             Arco_bici_cenital = Arc( arc_center = Rueda_frontal_bici_cenital.get_center() , radius = 0.5, start_angle = 0, angle = Angulo_arco_bici_cenital)
