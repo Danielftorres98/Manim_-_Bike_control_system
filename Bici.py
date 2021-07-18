@@ -116,22 +116,34 @@ class Anim_1_1(GraphScene):
         Punto_referencia_bici_trasera = Rueda_bici_trasera.get_center()+0.6*DOWN
         Contador_fotograma = 0
 
-       # while Contador_fotograma <= -( (1 / Delta_Angulo) * PI ):
+        Angulo_bici_trasera = DecimalNumber(0, num_decimal_places=2, include_sign=False)
+        Angulo_bici_trasera.add_updater(lambda d: d.set_value( Angulo_arco_bici_trasera * 180 / PI) )
+        Angulo_bici_trasera.next_to(Silla_bici_trasera, UP, buff=1)
 
-        Rueda_frontal_bici_cenital.rotate( Angulo , about_point = Rueda_frontal_bici_cenital.get_center() )
-        Bici_trasera.rotate( Angulo , about_point = Punto_referencia_bici_trasera )
-        self.wait(0.1)
-        Angulo = Delta_Angulo
-        Contador_fotograma = Contador_fotograma + 1
+        Angulo_bici_cenital = DecimalNumber(0, num_decimal_places=2, include_sign=False)
+        Angulo_bici_cenital.add_updater(lambda d: d.set_value( Angulo_arco_bici_trasera * 180 / PI) )
+        Angulo_bici_cenital.next_to(Rueda_frontal_bici_cenital, UP, buff=1)
 
-        Arco_bici_trasera = Arc( arc_center = Punto_referencia_bici_trasera , radius = 3, start_angle = PI/2, angle = Angulo_arco_bici_trasera)
-        Arco_bici_cenital = Arc( arc_center = Rueda_frontal_bici_cenital.get_center() , radius = 0.5, start_angle = 0, angle = Angulo_arco_bici_cenital)
+        while Contador_fotograma <= -( (1 / Delta_Angulo) * PI ):
 
-        Angulo_arco_bici_trasera = Angulo_arco_bici_trasera + Delta_Angulo
-        Angulo_arco_bici_cenital = Angulo_arco_bici_cenital + Delta_Angulo
+            Rueda_frontal_bici_cenital.rotate( Angulo , about_point = Rueda_frontal_bici_cenital.get_center() )
+            Bici_trasera.rotate( Angulo , about_point = Punto_referencia_bici_trasera )
+            self.wait(0.1)
+            Angulo = Delta_Angulo
+            Contador_fotograma = Contador_fotograma + 1
 
-        self.play( ShowCreation( Arco_bici_trasera ), ShowCreation( Arco_bici_cenital ), run_time = 0.1)
-        self.play( FadeOut( Arco_bici_trasera ), FadeOut( Arco_bici_cenital ), run_time = 0.1)
+            Angulo_bici_trasera.add_updater(lambda d: d.set_value( Angulo_arco_bici_trasera * 180 / PI) )
+            
+            Angulo_bici_cenital.add_updater(lambda d: d.set_value( Angulo_arco_bici_trasera * 180 / PI) )
+
+            Arco_bici_trasera = Arc( arc_center = Punto_referencia_bici_trasera , radius = 3, start_angle = PI/2, angle = Angulo_arco_bici_trasera)
+            Arco_bici_cenital = Arc( arc_center = Rueda_frontal_bici_cenital.get_center() , radius = 0.5, start_angle = 0, angle = Angulo_arco_bici_cenital)
+
+            Angulo_arco_bici_trasera = Angulo_arco_bici_trasera + Delta_Angulo
+            Angulo_arco_bici_cenital = Angulo_arco_bici_cenital + Delta_Angulo
+
+            self.play( ShowCreation( Angulo_bici_cenital ), ShowCreation( Angulo_bici_trasera ), ShowCreation( Arco_bici_trasera ), ShowCreation( Arco_bici_cenital ), run_time = 0.1)
+            self.play( FadeOut( Angulo_bici_cenital ), FadeOut( Angulo_bici_trasera ), FadeOut( Arco_bici_trasera ), FadeOut( Arco_bici_cenital ), run_time = 0.1)
     
         self.wait(2)
 
