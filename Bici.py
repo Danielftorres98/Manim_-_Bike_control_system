@@ -124,6 +124,7 @@ class Anim_1_2(ThreeDScene):
         
         axes = ThreeDAxes(**axis_config)
         self.set_camera_orientation(phi = 80*DEGREES, theta = -40*DEGREES, distance = 6)
+        #self.play(ShowCreation(axes),run_time = 2)
 
         Rueda1 = Circle(
                      color = BLUE,
@@ -169,35 +170,42 @@ class Anim_1_2(ThreeDScene):
 
         Bici.rotate(PI/2, axis = RIGHT)
 
-        #self.play(ShowCreation(axes),run_time = 2)
         self.play(ShowCreation(Bici),run_time = 2)
         self.wait(2)
 
         Angulo_phi = PI/2
         Angulo_arco_bici_trasera = PI/2
         
-        Delta_Angulo = -PI/3
+        Delta_Angulo = -PI/90
         Punto_referencia_bici_trasera = Bici.get_center() + 1.5*IN
         Contador_fotograma = 0
 
-        Angulo_bici_trasera = DecimalNumber(0, num_decimal_places=2, include_sign=False)
-        Angulo_bici_trasera.add_updater(lambda d: d.set_value( Angulo_arco_bici_trasera * 180 / PI) )
-        Angulo_bici_trasera.next_to(Linea6, UP, buff=1)
+        text, number = label = VGroup(
+            TextMobject("\\'Angulo = "),
+            DecimalNumber(
+                0,
+                num_decimal_places=1,
+                include_sign=False,
+            )
+        )
+        label.arrange(RIGHT)
+
+        number.add_updater(lambda m: m.set_value(Angulo_arco_bici_trasera * 180 / PI))
+        self.add_fixed_in_frame_mobjects(label)
+        label.to_corner(UL)
+        number.add_updater(lambda m: m.move_to(2*RIGHT + 3*DOWN + 1.5*OUT))
 
         while Contador_fotograma <= -( (1 / Delta_Angulo) * PI ):
 
-            Bici.rotate( Angulo_phi , axis = RIGHT, about_point = Punto_referencia_bici_trasera)
+            Bici.rotate(Angulo_phi, axis = RIGHT, about_point = Punto_referencia_bici_trasera)
             self.wait(0.1)
             Angulo_phi = Delta_Angulo
             Contador_fotograma = Contador_fotograma + 1
-
-            Angulo_bici_trasera.add_updater( lambda d: d.set_value( (Angulo_arco_bici_trasera * 180 / PI) + 1) )
-            
-            Arco_bici_trasera = Arc( arc_center = Punto_referencia_bici_trasera , radius = 3, start_angle = PI/2, angle = Angulo_arco_bici_trasera )
-
             Angulo_arco_bici_trasera = Angulo_arco_bici_trasera + Delta_Angulo
+
+            number.add_updater(lambda m: m.move_to(2*RIGHT + 3*DOWN + 1.5*OUT))
+            number.add_updater(lambda m: m.set_value( (Angulo_arco_bici_trasera * 180 / PI) + 1) )
             
-            self.play( ShowCreation( Angulo_bici_trasera ), ShowCreation( Arco_bici_trasera ), run_time = 0.1)
-            self.play( FadeOut( Angulo_bici_trasera ), FadeOut( Arco_bici_trasera ), run_time = 0.1)
+            #number.to_corner(UL)
     
-        self.wait(2)
+        self.wait(1)
